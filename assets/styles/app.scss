@@ -1,0 +1,10 @@
+@import "~bootstrap/scss/bootstrap";
+
+:root{
+    --bg-blue: #092b37;
+    --bg-red: #dd4e56;
+}
+body {
+    background-color: var(--bg-blue) ;
+    color: whitesmoke;
+}

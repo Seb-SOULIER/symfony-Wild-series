@@ -16,7 +16,7 @@ class CategoryFixtures extends Fixture
         'Fantastique'
     ];
 
-    public function load(ObjectManager $manager)
+     public function load(ObjectManager $manager)
     {
         foreach (self::CATEGORIES as $key => $categoryName) {
             $category = new Category();

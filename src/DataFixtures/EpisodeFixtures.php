@@ -4,12 +4,20 @@ namespace App\DataFixtures;
 
 use App\Entity\Episode;
 use App\Entity\Season;
+use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class EpisodeFixtures extends Fixture implements DependentFixtureInterface
 {
+    private $slug;
+
+    public function __construct(Slugify $slug)
+    {
+        $this->slug = $slug;
+    }
+
     public const EPISODES = [
         ['title' => 'episode 1',
             'number' => '1',
@@ -43,6 +51,7 @@ class EpisodeFixtures extends Fixture implements DependentFixtureInterface
                     $episode->setNumber($episodeTous['number']);
                     $episode->setSynopsis($episodeTous['synopsis']);
                     $episode->setSeason($this->getReference('season_' . $i . $a));
+                    $episode->setSlug($this->slug->generate($episodeTous['title']));
                     $manager->persist($episode);
                     $manager->flush();
                 }

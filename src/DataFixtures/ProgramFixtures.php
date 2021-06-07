@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\Service\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -10,7 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
     public const PROGRAMS = [
-        [   'titre'=> 'Walking Dead',
+        [   'titre'=> '  Walki--ng 394/*§:;Dead ',
             'summary' => 'Le policier Rick Grimes se réveille après un long coma. Il découvre avec effarement que le monde, ravagé par une épidémie, est envahi par les morts-vivants.',
             'poster' => 'https://m.media-amazon.com/images/M/MV5BZmFlMTA0MmUtNWVmOC00ZmE1LWFmMDYtZTJhYjJhNGVjYTU5XkEyXkFqcGdeQXVyMTAzMDM4MjM0._V1_.jpg',
         ],
@@ -36,6 +37,13 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
+    private $slug;
+
+    public function __construct(Slugify $slug)
+    {
+        $this->slug = $slug;
+    }
+
     public function load(ObjectManager $manager)
     {
         foreach (self::PROGRAMS as $key => $programTous) {
@@ -48,6 +56,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             for ($i = 0; $i < count(ActorFixtures::ACTORS); $i++) {
                 $program->addActor($this->getReference('actor_' . $i));
             }
+            $program->setSlug($this->slug->generate($programTous['titre']));
             $manager->persist($program);
             $this->addReference('program_' . $key, $program);
             $manager->flush();

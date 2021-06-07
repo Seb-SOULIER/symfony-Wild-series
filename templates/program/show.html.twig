@@ -16,11 +16,19 @@
             <h2>{{ loop.index }} / Saison : {{ season.number }}</h2>
             <p>{{ season.description }}</p>
             {# Lien vers la fiche de la season : #}
-           <a href="{{ path("program_season_show", { program: program.id , season: season.id }) }}">Voir la saison {{ season.number }}</a>
+           <a href="{{ path("program_season_show", { program_id: program.id , season_id: season.id }) }}">Voir la saison {{ season.number }}</a>
         </div>
     {% else %}
         Aucune saison trouvée.
     {% endfor %}
+    <strong>Acteurs :</strong>
+    <ul>
+        {% for actor in program.actors %}
+            <li>{{ actor.name }} </li>
+        {% else %}
+            <li>Aucun acteur pour cette série</li>
+        {% endfor %}
+    </ul>
     <a href= "{{ path('program_index') }}">
         Retour à la liste des programmes
     </a>

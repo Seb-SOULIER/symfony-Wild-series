@@ -65,7 +65,7 @@ class ProgramController extends AbstractController
     /**
      * Getting a program by id
      *
-     * @Route("/show/{program}", name="show")
+     * @Route("/show/{id}", name="show")
      * @return Response
      */
     public function show(Program $program):Response
@@ -92,9 +92,20 @@ class ProgramController extends AbstractController
      */
     public function showSeason(Program $program,Season $season):Response
     {
+        $episode = $this->getDoctrine()
+            ->getRepository(Episode::class)
+            ->findBy(['season' => $season]);
+
+        if (!$episode) {
+            throw $this->createNotFoundException(
+                'No program with id : '.$season.' found in program\'s table.'
+            );
+        }
+
         return $this->render('program/season_show.html.twig', [
             'program' => $program,
             'season' => $season,
+            'episodes' => $episode
         ]);
     }
     /**

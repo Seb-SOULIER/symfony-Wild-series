@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Episode;
+use App\Entity\Program;
+use App\Entity\Season;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

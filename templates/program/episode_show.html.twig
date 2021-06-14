@@ -15,7 +15,7 @@
         <p>{{ episode.synopsis }}</p>
     </div>
      <div>
-         {% if app.user %}
+         {% if is_granted("ROLE_CONTRIBUTOR") %}
              <h2>Ajouter un commentaire</h2>
              {{ form_start(form) }}
              {{ form_widget(form) }}
@@ -30,6 +30,9 @@
                 <h2>{{ loop.index }} / - Author : {{ comment.author.email }}</h2>
                 <p>{{ comment.comment }}</p>
                 <p>Rate : {{ comment.rate }}</p>
+                {% if is_granted("ROLE_ADMIN") or comment.author == app.user %}
+                <a href="{{ path('program_comment_delete', { comment_id: comment.id }) }}">Supprimer le commentaire</a>
+                {% endif %}
             </div>
         {% else %}
             Soit le premier a laisser un commentaire.

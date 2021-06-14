@@ -50,10 +50,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/categories, roles: ROLE_ADMIN }
-#        - { path: ^/programs, roles: ROLE_USER }
+        - { path: ^/programs/new, roles: ROLE_CONTRIBUTOR }
+        - { path: ^/programs/[A-Za-z0-9-]+/edit, roles: ROLE_CONTRIBUTOR }
 
     role_hierarchy:
         ROLE_CONTRIBUTOR:   ROLE_USER
-        ROLE_ADMIN:         [ROLE_ADMIN, ROLE_USER]
+        ROLE_ADMIN:         ROLE_CONTRIBUTOR
 
 # config/packages/security.yaml

@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Class ProgramController
@@ -32,7 +34,7 @@ class ProgramController extends AbstractController
             ->getRepository(Program::class)
             ->findAll();
         return $this->render('program/index.html.twig', [
-            'programs' => $programs
+            'programs' => $programs,
         ]);
     }
 
@@ -60,6 +62,7 @@ class ProgramController extends AbstractController
             // Flush the persisted object
             $slug = $slugify->generate($program->getTitle());
             $program->setSlug($slug);
+            $program->setOwner($this->getUser());
             $entityManager->flush();
             try {
                 $mailer->sendMail($program, 'Program/newProgramEmail.html.twig');
@@ -152,5 +155,50 @@ class ProgramController extends AbstractController
             'form' => $form->createView(),
             'comments' => $comments
         ]);
+    }
+    /**
+     * @Route("/{slug}/edit", name="edit")
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"slug": "slug"}})
+     * @return Response
+     */
+    public function edit(Request $request, Program $program): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN') && (!($this->getUser() == $program->getOwner()))) {
+            // If not the owner, throws a 403 Access Denied exception
+            throw new AccessDeniedException('Only the owner can edit the program!');
+        }
+
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('program_index');
+        }
+
+        return $this->render('program/edit.html.twig', [
+            'season' => $program,
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     *@Route("/comment/{comment_id}", name="comment_delete")
+     * @ParamConverter("comment", class="App\Entity\Comment", options={"mapping": {"comment_id": "id"}})
+     * @return Response
+     */
+    public function comment_delete(Comment $comment, Request $request):Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($comment);
+        $entityManager->flush();
+
+        return $this->redirect($request->headers->get('referer'));
+
+//        return $this->redirectToRoute('program_episode_show',[
+//            'slug' => $program->getSlug(),
+//            'season_id' => $season->getId(),
+//            'slug_episode'=>$episode->getSlug()
+//        ]);
     }
 }

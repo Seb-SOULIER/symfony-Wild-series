@@ -53,9 +53,16 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setPoster($programTous['poster']);
             $program->setCategory($this->getReference('category_0'));
             //ici les acteurs sont insérés via une boucle pour être DRY mais ce n'est pas obligatoire
-            for ($i = 0; $i < count(ActorFixtures::ACTORS); $i++) {
-                $program->addActor($this->getReference('actor_' . $i));
+            if ($programTous['titre'] === '  Walki--ng 394/*§:;Dead '){
+                for ($i = 0; $i < count(ActorFixtures::ACTORS); $i++) {
+                    $program->addActor($this->getReference('actor_' . $i));
+                }
+                $program->setOwner($this->getReference('user1'));
             }
+            if ($programTous['titre'] === "Fear The Walking Dead"){
+                    $program->addActor($this->getReference('actor_' . 2));
+            }
+
             $program->setSlug($this->slug->generate($programTous['titre']));
             $manager->persist($program);
             $this->addReference('program_' . $key, $program);
@@ -68,6 +75,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         return [
             ActorFixtures::class,
             CategoryFixtures::class,
+            UserFixtures::class
         ];
         // TODO: Implement getDependencies() method.
     }

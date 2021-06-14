@@ -1,6 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Wild Series</a>
+        {% if app.user %}
+            {{ app.user.email }}
+            <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+        {% else %}
+            <a href="{{ path('app_login') }}"> Se connecter</a>
+        {% endif %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,9 +18,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/programs/">Programs</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/categories/">Categories</a>
-                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categories/">Categories</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Ajouter

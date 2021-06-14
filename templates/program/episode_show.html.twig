@@ -10,10 +10,35 @@
             <p>Catégorie : {{ program.category.name }}</p>
         </div>
     </div>
-        <div>
-            <h2>Episode : {{ episode.number }} - {{ episode.title }}</h2>
-            <p>{{ episode.synopsis }}</p>
-        </div>
+    <div>
+        <h2>Episode : {{ episode.number }} - {{ episode.title }}</h2>
+        <p>{{ episode.synopsis }}</p>
+    </div>
+     <div>
+         {% if app.user %}
+             <h2>Ajouter un commentaire</h2>
+             {{ form_start(form) }}
+             {{ form_widget(form) }}
+             <button class="btn">{{ button_label|default('Save') }}</button>
+             {{ form_end(form) }}
+         {% endif %}
+     </div>
+    <div>
+        <h2>Commentaires :</h2>
+        {% for comment in comments %}
+            <div>
+                <h2>{{ loop.index }} / - Author : {{ comment.author.email }}</h2>
+                <p>{{ comment.comment }}</p>
+                <p>Rate : {{ comment.rate }}</p>
+            </div>
+        {% else %}
+            Soit le premier a laisser un commentaire.
+            {% if app.user %}
+            {% else %}
+                <a href="{{ path('app_login') }}"> Se connecter</a>
+            {% endif%}
+        {% endfor %}
+    </div>
     <div>
         <a href= "{{ path("program_season_show", { slug: program.slug, season_id: season.id }) }}">
             Retour à la liste des episodes

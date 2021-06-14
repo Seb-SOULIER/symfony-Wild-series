@@ -33,5 +33,5 @@ services:
 
     # explicitly configure the service
     App\Service\Mailer:
-        arguments:
-            $adminEmail: 'manager@example.com'
+#        arguments:
+#            $adminEmail: 'manager@example.com'

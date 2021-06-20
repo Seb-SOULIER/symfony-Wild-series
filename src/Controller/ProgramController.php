@@ -73,6 +73,8 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $program->setOwner($this->getUser());
             $entityManager->flush();
+
+            $this->addFlash('success','Le programme a bien été enregistré');
             try {
                 $mailer->sendMail($program, 'Program/newProgramEmail.html.twig');
                 return $this->redirectToRoute('program_index');
@@ -182,6 +184,8 @@ class ProgramController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'Tu as mis a jours ton programme');
 
             return $this->redirectToRoute('program_index');
         }

@@ -29,6 +29,9 @@
             <li>Aucun acteur pour cette série</li>
         {% endfor %}
     </ul>
+    <a href="{{ path('program_watchlist', { program: program.id }) }}" class="favorite">
+        <i class="bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+    </a>
     <a href= "{{ path('program_index') }}">
         Retour à la liste des programmes
     </a>

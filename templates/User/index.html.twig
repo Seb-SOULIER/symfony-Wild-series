@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profil{% endblock %}
+
+{% block body %}
+    <h1> Mon Profil : </h1>
+
+    <h2> Séries ajoutées </h2>
+
+    {% for program in programs %}
+        <h3>{{ program.title }}</h3>
+        <img src="{{ program.poster }}" alt="" class="user-img">
+    {% else %}
+        <h3>Pas de programme ajouté</h3>
+    {% endfor %}
+
+
+    <h2 class="mt-5"> Mes séries favorites </h2>
+
+    {% for program in app.user.getWatchlist %}
+        <h3>{{ program.title }}</h3>
+        <img src="{{ program.poster }}" alt="" class="user-img">
+    {% else %}
+        <h3>Pas de favori</h3>
+    {% endfor %}
+
+    <br><br>
+    <a href="{{ path('app_index') }}">
+        Retour à l'accueil
+    </a>
+
+{% endblock %}

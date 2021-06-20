@@ -11,6 +11,7 @@ use App\Form\SearchProgramFormType;
 use App\Repository\ProgramRepository;
 use App\Service\Mailer;
 use App\Service\Slugify;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -213,5 +214,25 @@ class ProgramController extends AbstractController
 //            'season_id' => $season->getId(),
 //            'slug_episode'=>$episode->getSlug()
 //        ]);
+    }
+
+    /**
+     * @Route("/{program}/watchlist", name="watchlist", methods={"GET","POST"})
+     * @return Response
+     */
+    public function addToWatchList(Request $request, Program $program, EntityManagerInterface $manager):Response
+    {
+        if ($this->getUser()->isInWatchList($program)) {
+            $this->getUser()->removeFromWatchlist($program);
+            $this->addFlash('warning', 'Série supprimé des favoris');
+
+        } else {
+            $this->getUser()->addToWatchList($program);
+            $this->addFlash('success', 'Série ajouté en favori');
+        }
+        $manager->flush();
+
+        return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()]);
+
     }
 }

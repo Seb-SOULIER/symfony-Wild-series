@@ -24,3 +24,6 @@ https://www.loom.com/share/a3529cd9ba894d7494743e98d9deb7af
 
 quest_24  
 https://www.loom.com/share/40970479391d4d338f155531c5f2946b
+
+quest_25.1  
+https://www.loom.com/share/8af63cccc2744732a37d821ebee58c09

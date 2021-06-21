@@ -2,26 +2,38 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Wild Series</a>
         {% if app.user %}
-            {{ app.user.email }}
-            <a href="{{ path('app_logout') }}"> Se déconnecter</a>
-            <a href="{{ path('user_profil') }}"> Mon compte</a>
+            {% trans with {'%username%': app.user.email} %}
+                hello_username
+            {% endtrans %} !
+            <a href="{{ path('app_logout') }}"> {{ 'account.logout'|trans }}</a>
         {% else %}
-            <a href="{{ path('app_login') }}"> Se connecter</a>
+            <a href="{{ path('app_login') }}"> {{ 'account.login'|trans }}</a>
         {% endif %}
+        {% if app.user %}
+            {{ app.user.email }}
+            <a href="{{ path('user_profil') }}"> Mon compte</a>
+        {% endif %}
+
+        {% if app.request.locale =='en' %}
+        <li class="nav-item"><a class="nav-link text-dark" href="/fr">FR</a></li>
+        {% else %}
+        <li class="nav-item" ><a class="nav-link text-dark" href="/en">EN</a></li>
+        {% endif %}
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_index')}}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/programs/">Programs</a>
+                    <a class="nav-link" href="{{ path('program_index')}}">Programs</a>
                 </li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/categories/">Categories</a>
+                        <a class="nav-link" href="{{ path('category_index')}}">Categories</a>
                     </li>
                 {% endif %}
                 <li class="nav-item dropdown">
@@ -29,11 +41,11 @@
                         Ajouter
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/programs/new/">Program</a></li>
-                        <li><a class="dropdown-item" href="/categories/new/">Catégorie</a></li>
+                        <li><a class="dropdown-item" href="{{ path('program_new')}}">Program</a></li>
+                        <li><a class="dropdown-item" href="{{ path('category_new')}}">Catégorie</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/season/">CRUD Season</a></li>
-                        <li><a class="dropdown-item" href="/episode/">CRUD Episode</a></li>
+                        <li><a class="dropdown-item" href="{{ path('season_index')}}">CRUD Season</a></li>
+                        <li><a class="dropdown-item" href="{{ path('episode_index')}}">CRUD Episode</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

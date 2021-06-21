@@ -1,0 +1,6 @@
+welcome: Bienvenue
+account.sign_in: 'Se connecter'
+account.register: 'Créer un compte'
+hello_username: Salut %username%
+account.logout: Se déconnecter
+account.login: Se connecter

@@ -233,7 +233,7 @@ class ProgramController extends AbstractController
         $manager->flush();
 
         return $this->json([
-            'isInWatchlist' => $this->getUser()->isInWatchList($program)
+            'isInWatchList' => $this->getUser()->isInWatchList($program)
         ]);
     }
 }

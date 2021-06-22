@@ -9,7 +9,7 @@
             <h1 class="mt-0">{{ program.title }}</h1>
             <p>{{ program.summary }}</p>
             <p>Catégorie : {{ program.category.name }}</p>
-            <a id="watchlist" href="{{ path('program_watchlist', { program: program.id }) }}" class="favorite">
+            <a id="watchlist" href="{{ path('program_watchlist', { program: program.id }) }}">
                 <i class="bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
             </a>
         </div>

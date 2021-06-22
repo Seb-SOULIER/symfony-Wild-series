@@ -27,3 +27,10 @@ https://www.loom.com/share/40970479391d4d338f155531c5f2946b
 
 quest_25.1  
 https://www.loom.com/share/8af63cccc2744732a37d821ebee58c09
+
+quest_25.2  
+https://www.loom.com/share/2cf7179493e6435a8b105ec308085540
+
+quest_26  
+https://www.loom.com/share/2cf7179493e6435a8b105ec308085540
+

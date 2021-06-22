@@ -4,16 +4,13 @@ namespace App\Form;
 
 use App\Entity\Actor;
 use App\Entity\Program;
-use App\Service\Slugify;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ProgramType extends AbstractType
 {
@@ -22,7 +19,11 @@ class ProgramType extends AbstractType
         $builder
             ->add('title',TextType::class)
             ->add('summary',TextareaType::class)
-            ->add('poster',UrlType::class)
+            ->add('posterFile', VichFileType::class,[
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true
+                ])
             ->add('category', null, ['choice_label' => 'name'])
             ->add('actors',EntityType::class,[
                 'by_reference'=> false,

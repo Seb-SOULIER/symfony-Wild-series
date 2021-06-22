@@ -3,15 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\ProgramRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ProgramRepository::class)
  * @UniqueEntity("title", message="Le titre existe déja")
+ * //On précise à l’entité que nous utiliserons l’upload du package Vich uploader
+ * @Vich\Uploadable
  */
 class Program
 {
@@ -42,10 +47,20 @@ class Program
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
      */
     private $poster;
 
+    //On va créer un nouvel attribut à notre entité, qui ne sera pas lié à une colonne
+    // Tu peux d’ailleurs voir que l’annotation ORM column n’est pas spécifiée car
+    //On ne rajoute pas de données de type file en bdd
     /**
+     * @Vich\UploadableField(mapping="poster_file", fileNameProperty="poster")
+     * @var File
+     */
+    private $posterFile;
+
+     /**
      * @ORM\ManyToOne(targetEntity=Category::class,inversedBy="programs")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -75,6 +90,11 @@ class Program
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="watchlist")
      */
     private $viewers;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updateAt;
 
     public function __construct()
     {
@@ -235,6 +255,30 @@ class Program
     public function removeViewer(User $viewer): self
     {
         $this->viewers->removeElement($viewer);
+        return $this;
+    }
+
+    public function getPosterFile(): ?File
+    {
+        return $this->posterFile;
+    }
+
+    public function setPosterFile(File $image = null)
+    {
+        $this->posterFile = $image;
+        if($image) {
+            $this->updateAt = new DateTime('now');
+        }
+    }
+
+    public function getUpdateAt(): ?\DateTimeInterface
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(?\DateTimeInterface $updateAt): self
+    {
+        $this->updateAt = $updateAt;
         return $this;
     }
 }

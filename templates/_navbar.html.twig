@@ -1,23 +1,23 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Wild Series</a>
+        <a class="navbar-brand" href="#"> Wild Series </a>
         {% if app.user %}
             {% trans with {'%username%': app.user.email} %}
                 hello_username
-            {% endtrans %} !
+            {% endtrans %}
             <a href="{{ path('app_logout') }}"> {{ 'account.logout'|trans }}</a>
         {% else %}
             <a href="{{ path('app_login') }}"> {{ 'account.login'|trans }}</a>
         {% endif %}
         {% if app.user %}
             {{ app.user.email }}
-            <a href="{{ path('user_profil') }}"> Mon compte</a>
+            <a href="{{ path('user_profil') }}"> Mon compte </a>
         {% endif %}
 
         {% if app.request.locale =='en' %}
         <li class="nav-item"><a class="nav-link text-dark" href="/fr">FR</a></li>
         {% else %}
-        <li class="nav-item" ><a class="nav-link text-dark" href="/en">EN</a></li>
+        <li class="nav-item"><a class="nav-link text-dark" href="/en">EN</a></li>
         {% endif %}
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

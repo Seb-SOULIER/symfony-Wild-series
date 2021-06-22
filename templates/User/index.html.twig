@@ -9,7 +9,11 @@
 
     {% for program in programs %}
         <h3>{{ program.title }}</h3>
-        <img src="{{ program.poster }}" alt="" class="user-img">
+        {% if program.poster starts with 'https' %}
+            <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+        {% else %}
+            <img class="align-self-start mr-3" src="{{ asset('uploads/') }}{{program.poster}}" alt="{{ program.title }} poster">
+        {% endif %}
     {% else %}
         <h3>Pas de programme ajouté</h3>
     {% endfor %}
@@ -19,7 +23,11 @@
 
     {% for program in app.user.getWatchlist %}
         <h3>{{ program.title }}</h3>
-        <img src="{{ program.poster }}" alt="" class="user-img">
+        {% if program.poster starts with 'https' %}
+            <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+        {% else %}
+            <img class="align-self-start mr-3" src="{{ asset('uploads/') }}{{program.poster}}" alt="{{ program.title }} poster">
+        {% endif %}
     {% else %}
         <h3>Pas de favori</h3>
     {% endfor %}

@@ -4,7 +4,11 @@
 
 {% block body %}
     <div class="media">
+        {% if program.poster starts with 'https' %}
         <img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+        {% else %}
+        <img class="align-self-start mr-3" src="{{ asset('uploads/') }}{{program.poster}}" alt="{{ program.title }} poster">
+        {% endif %}
         <div class="media-body">
             <h1 class="mt-0">{{ program.title }}</h1>
             <p>{{ program.summary }}</p>
